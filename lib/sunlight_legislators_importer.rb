@@ -5,8 +5,8 @@ class SunlightLegislatorsImporter
   def self.import(filename)
     csv = CSV.new(File.open(filename), :headers => true)
     csv.each do |row|
+      new_pol = Politician.new
       row.each do |field, value|
-        new_pol = Politician.new
         if field == "title"
           new_pol.title = Title.find_or_create_by(name: value)
         elsif field == "state"
@@ -16,8 +16,8 @@ class SunlightLegislatorsImporter
         else
           new_pol.send("#{field}=", value)
         end
-        new_pol.save
       end
+      new_pol.save
     end
   end
 end
